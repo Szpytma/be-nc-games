@@ -60,15 +60,12 @@ describe("GET /api/reviews/:review_id", () => {
       .expect(200)
       .then(({ body }) => {
         const { review } = body;
-        expect(review).toHaveProperty("category");
-        expect(review).toHaveProperty("title");
-        expect(review).toHaveProperty("review_id");
-        expect(review).toHaveProperty("designer");
-        expect(review).toHaveProperty("owner");
-        expect(review).toHaveProperty("review_body");
-        expect(review).toHaveProperty("review_img_url");
-        expect(review).toHaveProperty("created_at");
-        expect(review).toHaveProperty("votes");
+        expect(review.category).toBe("euro game");
+        expect(review.title).toBe("Agricola");
+        expect(review.review_id).toBe(1);
+        expect(review.designer).toBe("Uwe Rosenberg");
+        expect(review.owner).toBe("mallionaire");
+        expect(review.review_body).toBe("Farmyard fun!");
       });
   });
 
@@ -78,9 +75,9 @@ describe("GET /api/reviews/:review_id", () => {
       .expect(200)
       .then(({ body }) => {
         const { review } = body;
-        console.log(review);
         expect(review.title).toBe("Ultimate Werewolf");
         expect(review.review_id).toBe(3);
+        expect(review.review_body).toBe("We couldn't find the werewolf!");
       });
   });
 
