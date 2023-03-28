@@ -75,18 +75,15 @@ describe("GET /api/reviews", () => {
         });
       });
   });
-  //TODO
   it("200: responds with an sorted array of all reviews objects by by date in descending order.", () => {
     return request(app)
       .get("/api/reviews")
       .expect(200)
       .then(({ body }) => {
         const { reviews } = body;
-        const testData = [...reviews];
-        console.log(testData);
-        const sorted = testData.sort((a, b) => b.created_at - a.created_at);
-
-        expect(reviews).toEqual(sorted);
+        expect(reviews).toBeSortedBy("created_at", {
+          descending: true,
+        });
       });
   });
 });

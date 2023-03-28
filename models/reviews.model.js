@@ -1,10 +1,6 @@
 const db = require("../db/");
 
 exports.fetchReviewByID = (id) => {
-  // const reg = new RegExp("[0-9]");
-  // if (id === "" || !id) {
-  //   return Promise.reject({ status: 404, msg: "Please provide an valid ID" });
-  // }
   const selectCategoryById = "SELECT * FROM reviews WHERE review_id  = $1";
   return db.query(selectCategoryById, [id]).then((review) => {
     if (review.rows.length === 0) {
@@ -15,7 +11,6 @@ exports.fetchReviewByID = (id) => {
 };
 
 exports.fetchAllReviews = () => {
-  //TODO
   const selectAllCategories = "SELECT * FROM reviews ORDER BY created_at DESC";
   return db.query(selectAllCategories).then((reviews) => {
     return reviews.rows;
