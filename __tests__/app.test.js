@@ -95,15 +95,12 @@ describe("GET /api/reviews/:review_id", () => {
       .expect(200)
       .then(({ body }) => {
         const { review } = body;
-        expect(review).toHaveProperty("category");
-        expect(review).toHaveProperty("title");
-        expect(review).toHaveProperty("review_id");
-        expect(review).toHaveProperty("designer");
-        expect(review).toHaveProperty("owner");
-        expect(review).toHaveProperty("review_body");
-        expect(review).toHaveProperty("review_img_url");
-        expect(review).toHaveProperty("created_at");
-        expect(review).toHaveProperty("votes");
+        expect(review.category).toBe("euro game");
+        expect(review.title).toBe("Agricola");
+        expect(review.review_id).toBe(1);
+        expect(review.designer).toBe("Uwe Rosenberg");
+        expect(review.owner).toBe("mallionaire");
+        expect(review.review_body).toBe("Farmyard fun!");
       });
   });
 
@@ -114,15 +111,18 @@ describe("GET /api/reviews/:review_id", () => {
       .then(({ body }) => {
         const { review } = body;
         expect(review.title).toBe("Ultimate Werewolf");
+        expect(review.review_id).toBe(3);
+        expect(review.review_body).toBe("We couldn't find the werewolf!");
       });
   });
 
   it("should return an error if no number was provided as a param", () => {
     return request(app)
       .get("/api/reviews/one")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.message).toBe("Bad request");
+
+      .expect(400)
+      .then((body) => {
+        expect(body.error.text).toBe("Please provide an valid ID");
       });
   });
 
@@ -132,6 +132,30 @@ describe("GET /api/reviews/:review_id", () => {
       .expect(404)
       .then((body) => {
         expect(body.error.text).toBe("Index outOfBound");
+      });
+  });
+});
+
+describe("GET /api/reviews/:review_id/comments", () => {
+  it("should return an object of comments with specific keys sorted by created_at", () => {
+    return request(app)
+      .get("/api/reviews/2/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toBeSortedBy("created_at", {
+          descending: true,
+        });
+        expect(body.comments).toHaveLength(3);
+        body.comments.forEach((comment) => {
+          expect(comment).toMatchObject({
+            comment_id: expect.any(Number),
+            body: expect.any(String),
+            review_id: 2,
+            author: expect.any(String),
+            votes: expect.any(Number),
+            created_at: expect.any(String),
+          });
+        });
       });
   });
 });
