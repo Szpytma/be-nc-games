@@ -15,7 +15,8 @@ exports.fetchReviewByID = (id) => {
 };
 
 exports.fetchAllReviews = () => {
-  const selectAllCategories = "SELECT * FROM reviews";
+  //TODO
+  const selectAllCategories = "SELECT * FROM reviews ORDER BY created_at DESC";
   return db.query(selectAllCategories).then((reviews) => {
     return reviews.rows;
   });

@@ -83,14 +83,9 @@ describe("GET /api/reviews", () => {
       .then(({ body }) => {
         const { reviews } = body;
         const testData = [...reviews];
-        reviews.forEach((element) => {
-          console.log(element.created_at);
-        });
-
-        testData.forEach((element) => {
-          console.log(element.created_at);
-        });
+        console.log(testData);
         const sorted = testData.sort((a, b) => b.created_at - a.created_at);
+
         expect(reviews).toEqual(sorted);
       });
   });
