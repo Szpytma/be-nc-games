@@ -76,7 +76,7 @@ describe("GET /api/reviews", () => {
       });
   });
   //TODO
-  it.only("200: responds with an sorted array of all reviews objects by by date in descending order.", () => {
+  it("200: responds with an sorted array of all reviews objects by by date in descending order.", () => {
     return request(app)
       .get("/api/reviews")
       .expect(200)
