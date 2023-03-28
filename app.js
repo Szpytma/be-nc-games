@@ -15,13 +15,13 @@ app.get("/*", errorHandler);
 
 app.use((err, req, res, next) => {
   if (err.code === "22P02") {
-    res.status(404).send("Please provide an valid ID");
+    res.status(404).send({ message: "Bad request" });
   }
-  if (err.status && err.msg) {
-    res.status(err.status).send(err.msg);
+  if (err.status && err.message) {
+    res.status(err.status).send(err.message);
   }
 
-  res.status(err.status).send(err);
+  res.status(err.status).send(err.message);
 });
 
 module.exports = app;

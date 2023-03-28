@@ -62,16 +62,16 @@ describe("GET /api/reviews", () => {
         const { reviews } = body;
         expect(reviews).toHaveLength(13);
         reviews.forEach((review) => {
-          expect(review).toHaveProperty("category");
-          expect(review).toHaveProperty("created_at");
-          expect(review).toHaveProperty("designer");
-          expect(review).toHaveProperty("owner");
-          expect(review).toHaveProperty("created_at");
-          expect(review).toHaveProperty("review_body");
-          expect(review).toHaveProperty("review_id");
-          expect(review).toHaveProperty("review_img_url");
-          expect(review).toHaveProperty("title");
-          expect(review).toHaveProperty("votes");
+          expect(review).toHaveProperty("category", expect.any(String));
+          expect(review).toHaveProperty("created_at", expect.any(String));
+          expect(review).toHaveProperty("designer", expect.any(String));
+          expect(review).toHaveProperty("owner", expect.any(String));
+          expect(review).toHaveProperty("created_at", expect.any(String));
+          expect(review).toHaveProperty("review_body", expect.any(String));
+          expect(review).toHaveProperty("review_id", expect.any(Number));
+          expect(review).toHaveProperty("review_img_url", expect.any(String));
+          expect(review).toHaveProperty("title", expect.any(String));
+          expect(review).toHaveProperty("votes", expect.any(Number));
         });
       });
   });
@@ -121,8 +121,8 @@ describe("GET /api/reviews/:review_id", () => {
     return request(app)
       .get("/api/reviews/one")
       .expect(404)
-      .then((body) => {
-        expect(body.error.text).toBe("Please provide an valid ID");
+      .then(({ body }) => {
+        expect(body.message).toBe("Bad request");
       });
   });
 
