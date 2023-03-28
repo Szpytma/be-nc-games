@@ -16,3 +16,20 @@ exports.fetchAllReviews = () => {
     return reviews.rows;
   });
 };
+
+exports.fetchCommentsByReviewID = (id) => {
+  let queryStr = `
+    SELECT * FROM comments WHERE review_id = $1
+    ORDER BY created_at DESC;
+  `;
+
+  return db.query(queryStr, [id]).then((comments) => {
+    if (!comments.rows[0]) {
+      return Promise.reject({
+        status: 404,
+        msg: "review does not exist",
+      });
+    }
+    return comments.rows;
+  });
+};
