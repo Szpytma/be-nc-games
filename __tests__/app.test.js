@@ -38,7 +38,7 @@ describe("GET /*", () => {
 });
 
 describe("GET /api/categories", () => {
-  it.only("200: responds with an array of all category objects 4, should check if the category object have specific keys", () => {
+  it("200: responds with an array of all category objects 4, should check if the category object have specific keys", () => {
     return request(app)
       .get("/api/categories")
       .expect(200)
@@ -82,7 +82,7 @@ describe("GET /api/reviews/:review_id", () => {
       });
   });
 
-  it.only("should return an error if no number was provided as a param", () => {
+  it("should return an error if no number was provided as a param", () => {
     return request(app)
       .get("/api/reviews/one")
       .expect(404)
@@ -91,7 +91,7 @@ describe("GET /api/reviews/:review_id", () => {
       });
   });
 
-  it.only("should return an error 'Index outOfBound' if index is out of bound", () => {
+  it("should return an error 'Index outOfBound' if index is out of bound", () => {
     return request(app)
       .get("/api/reviews/99999")
       .expect(404)
