@@ -4,7 +4,7 @@ exports.fetchReviewByID = (id) => {
   const selectAllCategories = "SELECT * FROM reviews WHERE review_id  = $1";
   return db.query(selectAllCategories, [id]).then(({ rows }) => {
     if (rows.length === 0) {
-      return Promise.reject({ status: 404, msg: "Index outOfBound" });
+      return Promise.reject({ status: 404, message: "Index outOfBound" });
     }
     return rows[0];
   });
