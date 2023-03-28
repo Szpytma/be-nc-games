@@ -137,11 +137,12 @@ describe("GET /api/reviews/:review_id", () => {
 });
 
 describe("GET /api/reviews/:review_id/comments", () => {
-  it("should return an object of comments with specific keys sorted by created_at", () => {
+  it("200: responds with an array of comments object sorted by created_at with specific keys", () => {
     return request(app)
       .get("/api/reviews/2/comments")
       .expect(200)
       .then(({ body }) => {
+        console.log(body.comments);
         expect(body.comments).toBeSortedBy("created_at", {
           descending: true,
         });
@@ -158,4 +159,24 @@ describe("GET /api/reviews/:review_id/comments", () => {
         });
       });
   });
+
+  it("400: responds with an error when review_id is invalid  ", () => {
+    return request(app)
+      .get("/api/reviews/two/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toBe("Please provide an valid ID");
+      });
+  });
+
+  it("404: responds with an error when review_id valid but not found", () => {
+    return request(app)
+      .get("/api/reviews/9999/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toBe("Index outOfBound");
+      });
+  });
+
+  it("200: when the review exists, but has no comments (status 200)", () => {});
 });

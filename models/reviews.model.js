@@ -24,12 +24,19 @@ exports.fetchCommentsByReviewID = (id) => {
   `;
 
   return db.query(queryStr, [id]).then((comments) => {
+    if (comments.rows.length === 0) {
+      return Promise.reject({
+        status: 404,
+        message: "Index outOfBound",
+      });
+    }
     if (!comments.rows[0]) {
       return Promise.reject({
         status: 404,
-        msg: "review does not exist",
+        message: "review does not exist",
       });
     }
+
     return comments.rows;
   });
 };
