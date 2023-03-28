@@ -32,7 +32,7 @@ describe("GET /*", () => {
       .expect(404)
       .then(({ body }) => {
         const { error } = body;
-        expect(error).toEqual("This Path does not exist");
+        expect(error).toBe("This Path does not exist");
       });
   });
 });
@@ -49,6 +49,53 @@ describe("GET /api/categories", () => {
           expect(category).toHaveProperty("slug");
           expect(category).toHaveProperty("description");
         });
+      });
+  });
+});
+
+describe("GET /api/reviews/:review_id", () => {
+  it("should return an object of review with specific keys", () => {
+    return request(app)
+      .get("/api/reviews/1")
+      .expect(200)
+      .then(({ body }) => {
+        const { review } = body;
+        expect(review.category).toBe("euro game");
+        expect(review.title).toBe("Agricola");
+        expect(review.review_id).toBe(1);
+        expect(review.designer).toBe("Uwe Rosenberg");
+        expect(review.owner).toBe("mallionaire");
+        expect(review.review_body).toBe("Farmyard fun!");
+      });
+  });
+
+  it("should return an object with the title 'Ultimate Werewolf' from id 3", () => {
+    return request(app)
+      .get("/api/reviews/3")
+      .expect(200)
+      .then(({ body }) => {
+        const { review } = body;
+        expect(review.title).toBe("Ultimate Werewolf");
+        expect(review.review_id).toBe(3);
+        expect(review.review_body).toBe("We couldn't find the werewolf!");
+      });
+  });
+
+  it("should return an error if no number was provided as a param", () => {
+    return request(app)
+      .get("/api/reviews/one")
+      .expect(400)
+      .then((body) => {
+        expect(body.error.text).toBe("Please provide an valid ID");
+      });
+  });
+
+  it("should return an error 'Index outOfBound' if index is out of bound", () => {
+    return request(app)
+      .get("/api/reviews/99999")
+      .expect(404)
+      .then((body) => {
+        expect(body.error.text).toBe("Index outOfBound");
       });
   });
 });
