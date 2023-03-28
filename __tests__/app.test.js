@@ -38,7 +38,7 @@ describe("GET /*", () => {
 });
 
 describe("GET /api/categories", () => {
-  it.only("200: responds with an array of all category objects 4, should check if the category object have specific keys", () => {
+  it("200: responds with an array of all category objects 4, should check if the category object have specific keys", () => {
     return request(app)
       .get("/api/categories")
       .expect(200)
@@ -49,6 +49,49 @@ describe("GET /api/categories", () => {
           expect(category).toHaveProperty("slug");
           expect(category).toHaveProperty("description");
         });
+      });
+  });
+});
+
+describe("GET /api/reviews", () => {
+  it("200: responds with an array of all 13 reviews objects, should check if the reviews object have specific keys", () => {
+    return request(app)
+      .get("/api/reviews")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toHaveLength(13);
+        reviews.forEach((review) => {
+          expect(review).toHaveProperty("category");
+          expect(review).toHaveProperty("created_at");
+          expect(review).toHaveProperty("designer");
+          expect(review).toHaveProperty("owner");
+          expect(review).toHaveProperty("created_at");
+          expect(review).toHaveProperty("review_body");
+          expect(review).toHaveProperty("review_id");
+          expect(review).toHaveProperty("review_img_url");
+          expect(review).toHaveProperty("title");
+          expect(review).toHaveProperty("votes");
+        });
+      });
+  });
+  //TODO
+  it.only("200: responds with an sorted array of all reviews objects by by date in descending order.", () => {
+    return request(app)
+      .get("/api/reviews")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        const testData = [...reviews];
+        reviews.forEach((element) => {
+          console.log(element.created_at);
+        });
+
+        testData.forEach((element) => {
+          console.log(element.created_at);
+        });
+        const sorted = testData.sort((a, b) => b.created_at - a.created_at);
+        expect(reviews).toEqual(sorted);
       });
   });
 });
@@ -82,7 +125,7 @@ describe("GET /api/reviews/:review_id", () => {
       });
   });
 
-  it.only("should return an error if no number was provided as a param", () => {
+  it("should return an error if no number was provided as a param", () => {
     return request(app)
       .get("/api/reviews/one")
       .expect(404)
@@ -91,7 +134,7 @@ describe("GET /api/reviews/:review_id", () => {
       });
   });
 
-  it.only("should return an error 'Index outOfBound' if index is out of bound", () => {
+  it("should return an error 'Index outOfBound' if index is out of bound", () => {
     return request(app)
       .get("/api/reviews/99999")
       .expect(404)
