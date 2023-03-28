@@ -78,14 +78,16 @@ describe("GET /api/reviews/:review_id", () => {
       .expect(200)
       .then(({ body }) => {
         const { review } = body;
+        console.log(review);
         expect(review.title).toBe("Ultimate Werewolf");
+        expect(review.review_id).toBe(3);
       });
   });
 
   it("should return an error if no number was provided as a param", () => {
     return request(app)
       .get("/api/reviews/one")
-      .expect(404)
+      .expect(400)
       .then((body) => {
         expect(body.error.text).toBe("Please provide an valid ID");
       });

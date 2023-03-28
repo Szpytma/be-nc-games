@@ -11,7 +11,7 @@ app.get("/*", errorHandler);
 
 app.use((err, req, res, next) => {
   if (err.code === "22P02") {
-    res.status(404).send("Please provide an valid ID");
+    res.status(400).send("Please provide an valid ID");
   }
   if (err.status && err.msg) {
     res.status(err.status).send(err.msg);
