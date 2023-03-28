@@ -121,8 +121,8 @@ describe("GET /api/reviews/:review_id", () => {
       .get("/api/reviews/one")
 
       .expect(400)
-      .then((body) => {
-        expect(body.error.text).toBe("Please provide an valid ID");
+      .then(({ body }) => {
+        expect(body.message).toBe("Please provide an valid ID");
       });
   });
 
@@ -130,8 +130,8 @@ describe("GET /api/reviews/:review_id", () => {
     return request(app)
       .get("/api/reviews/99999")
       .expect(404)
-      .then((body) => {
-        expect(body.error.text).toBe("Index outOfBound");
+      .then(({ body }) => {
+        expect(body.message).toBe("Index outOfBound");
       });
   });
 });
