@@ -1,3 +1,4 @@
+
 const {
   fetchReviewByID,
   selectCommentsByReviewId,
@@ -13,6 +14,15 @@ exports.getReviewByID = (req, res, next) => {
       next(error);
     });
 };
+
+exports.getAllReviews = (req, res, next) => {
+  fetchAllReviews()
+    .then((reviews) => {
+      res.status(200).send({ reviews });
+    })
+    .catch((error) => {
+      next(error);
+    });
 
 exports.getCommentsByReviewId = (req, res, next) => {
   selectCommentsByReviewId(req.params.review_id)

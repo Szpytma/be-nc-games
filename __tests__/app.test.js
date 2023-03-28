@@ -53,6 +53,41 @@ describe("GET /api/categories", () => {
   });
 });
 
+describe("GET /api/reviews", () => {
+  it("200: responds with an array of all 13 reviews objects, should check if the reviews object have specific keys", () => {
+    return request(app)
+      .get("/api/reviews")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toHaveLength(13);
+        reviews.forEach((review) => {
+          expect(review).toHaveProperty("category", expect.any(String));
+          expect(review).toHaveProperty("created_at", expect.any(String));
+          expect(review).toHaveProperty("designer", expect.any(String));
+          expect(review).toHaveProperty("owner", expect.any(String));
+          expect(review).toHaveProperty("created_at", expect.any(String));
+          expect(review).toHaveProperty("review_body", expect.any(String));
+          expect(review).toHaveProperty("review_id", expect.any(Number));
+          expect(review).toHaveProperty("review_img_url", expect.any(String));
+          expect(review).toHaveProperty("title", expect.any(String));
+          expect(review).toHaveProperty("votes", expect.any(Number));
+        });
+      });
+  });
+  it("200: responds with an sorted array of all reviews objects by by date in descending order.", () => {
+    return request(app)
+      .get("/api/reviews")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toBeSortedBy("created_at", {
+          descending: true,
+        });
+      });
+  });
+});
+
 describe("GET /api/reviews/:review_id", () => {
   it("should return an object of review with specific keys", () => {
     return request(app)
@@ -84,6 +119,7 @@ describe("GET /api/reviews/:review_id", () => {
   it("should return an error if no number was provided as a param", () => {
     return request(app)
       .get("/api/reviews/one")
+
       .expect(400)
       .then((body) => {
         expect(body.error.text).toBe("Please provide an valid ID");

@@ -26,3 +26,10 @@ exports.selectCommentsByReviewId = (id) => {
     return comments.rows;
   });
 };
+
+exports.fetchAllReviews = () => {
+  const selectAllCategories = "SELECT * FROM reviews ORDER BY created_at DESC";
+  return db.query(selectAllCategories).then((reviews) => {
+    return reviews.rows;
+  });
+};
