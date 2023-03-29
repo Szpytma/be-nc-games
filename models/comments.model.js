@@ -40,7 +40,6 @@ exports.insertCommentToReview = (review_id, postBody) => {
 const checkIfUserExist = (username) => {
   let queryStr = `SELECT * FROM users WHERE username = ($1);`;
   return db.query(queryStr, [username]).then(({ rows }) => {
-    console.log(rows[0]);
     return rows[0];
   });
 };
