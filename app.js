@@ -3,27 +3,28 @@ const { getCategories } = require("./controllers/categories.controller");
 const {
   getReviewByID,
   getAllReviews,
-  getCommentsByReviewID,
 } = require("./controllers/reviews.controller");
-const { errorHandler } = require("./controllers/pathDoesExistError.controller");
-
+const {
+  postComment,
+  getCommentsByReviewID,
+} = require("./controllers/comments.controller");
+const { pathNotFound } = require("./controllers/pathDoesExistError.controller");
+const { errorController } = require("./controllers/errorhandlers");
 const app = express();
+app.use(express.json());
 
 app.get("/api/categories", getCategories);
+
 app.get("/api/reviews", getAllReviews);
 app.get("/api/reviews/:review_id", getReviewByID);
+
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewID);
-app.get("/*", errorHandler);
+app.post("/api/reviews/:review_id/comments", postComment);
+
+app.get("/*", pathNotFound);
 
 app.use((err, req, res, next) => {
-  if (err.code === "22P02") {
-    res.status(400).send({ message: "Please provide an valid ID" });
-  }
-  if (err.status && err.message) {
-    res.status(err.status).send({ message: err.message });
-  }
-
-  res.status(err.status).send({ message: err.message });
+  errorController(err, res);
 });
 
 module.exports = app;

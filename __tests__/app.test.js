@@ -122,7 +122,7 @@ describe("GET /api/reviews/:review_id", () => {
 
       .expect(400)
       .then(({ body }) => {
-        expect(body.message).toBe("Please provide an valid ID");
+        expect(body.message).toBe("Please provide an valid data");
       });
   });
 
@@ -164,7 +164,7 @@ describe("GET /api/reviews/:review_id/comments", () => {
       .get("/api/reviews/two/comments")
       .expect(400)
       .then(({ body }) => {
-        expect(body.message).toBe("Please provide an valid ID");
+        expect(body.message).toBe("Please provide an valid data");
       });
   });
 
@@ -186,3 +186,90 @@ describe("GET /api/reviews/:review_id/comments", () => {
       });
   });
 });
+describe("POST /api/reviews/:review_id/comments", () => {
+  it("201: responds with posted comment object", () => {
+    const commentToPost = {
+      username: "bainesface",
+      body: "test comment",
+    };
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(commentToPost)
+      .expect(201)
+      .then(({ body }) => {
+        const { comment } = body;
+        expect(comment).toEqual({
+          comment_id: 7,
+          body: "test comment",
+          review_id: 1,
+          author: "bainesface",
+          votes: 0,
+          created_at: expect.any(String),
+        });
+      });
+  });
+
+  it('404: responds with error message "404 not found if the wrong username was passed"', () => {
+    const commentToPost = {
+      username: "szpytma",
+      body: "test comment",
+    };
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(commentToPost)
+      .expect(404)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toEqual("404 not found");
+      });
+  });
+
+  it('404: responds with error message "404 not found" if we tried to access not existing id', () => {
+    const commentToPost = {
+      username: "bainesface",
+      body: "test comment",
+    };
+    return request(app)
+      .post("/api/reviews/999/comments")
+      .send(commentToPost)
+      .expect(404)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toEqual("404 not found");
+      });
+  });
+
+  it('400: responds with error message "400 Please provide an valid data" if we tried to access invalid id ', () => {
+    const commentToPost = {
+      username: "bainesface",
+      body: "test comment",
+    };
+    return request(app)
+      .post("/api/reviews/one/comments")
+      .send(commentToPost)
+      .expect(400)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toEqual("Please provide an valid data");
+      });
+  });
+
+  it('400: responds with error message "missing body" if we tried to post empty body', () => {
+    const commentToPost = {
+      username: "bainesface",
+      body: "",
+    };
+    return request(app)
+      .post("/api/reviews/one/comments")
+      .send(commentToPost)
+      .expect(400)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toEqual("Please provide an valid data");
+      });
+  });
+});
+
+////really great work, there's a couple of tests you're missing,
+
+//and if the body or username is missing,

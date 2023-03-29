@@ -15,3 +15,16 @@ To see that project please
 
 3. Run _npm run setup-dbs_ to create a test and dev database locally
 4. Run _npm run seed_ to insert data into previously created database
+
+To run application please run node connection.js. Please see below possible http request for the application.
+
+Possible GET REQUEST
+
+- "/api/categories" - to list all game categories
+- "/api/reviews" - to list all available reviews
+- "/api/reviews/:review_id" - to list specific review by ID
+- "/api/reviews/:review_id/comments" - to list specific comments by review ID
+
+Possible POST REQUEST
+
+- "/api/reviews/:review_id/comments" - To add an comment to the specific review accessing byu ID and passing username and body
