@@ -142,7 +142,6 @@ describe("GET /api/reviews/:review_id/comments", () => {
       .get("/api/reviews/2/comments")
       .expect(200)
       .then(({ body }) => {
-        console.log(body.comments);
         expect(body.comments).toBeSortedBy("created_at", {
           descending: true,
         });
@@ -178,5 +177,12 @@ describe("GET /api/reviews/:review_id/comments", () => {
       });
   });
 
-  it("200: when the review exists, but has no comments (status 200)", () => {});
+  it("200: when the review exists, but has no comments (status 200)", () => {
+    return request(app)
+      .get("/api/reviews/1/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toEqual([]);
+      });
+  });
 });

@@ -25,18 +25,18 @@ exports.fetchCommentsByReviewID = (id) => {
 
   return db.query(queryStr, [id]).then((comments) => {
     if (comments.rows.length === 0) {
-      return Promise.reject({
-        status: 404,
-        message: "Index outOfBound",
-      });
+      return checkReviewExist(id);
     }
-    if (!comments.rows[0]) {
-      return Promise.reject({
-        status: 404,
-        message: "review does not exist",
-      });
-    }
-
     return comments.rows;
+  });
+};
+
+const checkReviewExist = (id) => {
+  let queryStr = `SELECT * FROM reviews WHERE review_id = $1;`;
+  return db.query(queryStr, [id]).then((result) => {
+    if (result.rowCount === 0) {
+      return Promise.reject({ status: 404, message: "Index outOfBound" });
+    }
+    return [];
   });
 };
