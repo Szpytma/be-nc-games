@@ -35,7 +35,7 @@ const checkReviewExist = (id) => {
   let queryStr = `SELECT * FROM reviews WHERE review_id = $1;`;
   return db.query(queryStr, [id]).then((result) => {
     if (result.rowCount === 0) {
-      return Promise.reject({ status: 404, message: "Index outOfBound" });
+      return Promise.reject({ status: 404, message: "review not found" });
     }
     return [];
   });

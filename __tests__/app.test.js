@@ -173,7 +173,7 @@ describe("GET /api/reviews/:review_id/comments", () => {
       .get("/api/reviews/9999/comments")
       .expect(404)
       .then(({ body }) => {
-        expect(body.message).toBe("Index outOfBound");
+        expect(body.message).toBe("review not found");
       });
   });
 
