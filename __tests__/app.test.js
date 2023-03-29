@@ -186,3 +186,41 @@ describe("GET /api/reviews/:review_id/comments", () => {
       });
   });
 });
+describe("POST /api/reviews/:review_id/comments", () => {
+  it("201: responds with posted comment object", () => {
+    const commentToPost = {
+      username: "bainesface",
+      body: "test comment",
+    };
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(commentToPost)
+      .expect(201)
+      .then(({ body }) => {
+        const { comment } = body;
+        expect(comment).toEqual({
+          comment_id: 7,
+          body: "test comment",
+          review_id: 1,
+          author: "bainesface",
+          votes: 0,
+          created_at: expect.any(String),
+        });
+      });
+  });
+
+  // it('404: responds with error message "not found if user is not on db"', () => {
+  //   const commentToPost = {
+  //     username: "szpytma",
+  //     body: "test comment",
+  //   };
+  //   return request(app)
+  //     .post("/api/reviews/1/comments")
+  //     .send(commentToPost)
+  //     .expect(404)
+  //     .then(({ body }) => {
+  //       const { message } = body;
+  //       expect(message).toEqual("404 user not found");
+  //     });
+  // });
+});
