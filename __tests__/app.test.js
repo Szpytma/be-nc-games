@@ -269,7 +269,3 @@ describe("POST /api/reviews/:review_id/comments", () => {
       });
   });
 });
-
-////really great work, there's a couple of tests you're missing,
-
-//and if the body or username is missing,
