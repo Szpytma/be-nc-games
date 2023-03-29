@@ -26,9 +26,6 @@ const checkReviewExist = (id) => {
 
 exports.insertCommentToReview = (review_id, postBody) => {
   const { username, body } = postBody;
-  if (!checkIfUserExist(username)) {
-    return Promise.reject({ status: 404, message: "404 user not found" });
-  }
   let queryStr = `INSERT INTO comments
     (review_id, author, body)
     VALUES
@@ -43,6 +40,7 @@ exports.insertCommentToReview = (review_id, postBody) => {
 const checkIfUserExist = (username) => {
   let queryStr = `SELECT * FROM users WHERE username = ($1);`;
   return db.query(queryStr, [username]).then(({ rows }) => {
+    console.log(rows[0]);
     return rows[0];
   });
 };

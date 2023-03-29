@@ -209,18 +209,33 @@ describe("POST /api/reviews/:review_id/comments", () => {
       });
   });
 
-  // it('404: responds with error message "not found if user is not on db"', () => {
-  //   const commentToPost = {
-  //     username: "szpytma",
-  //     body: "test comment",
-  //   };
-  //   return request(app)
-  //     .post("/api/reviews/1/comments")
-  //     .send(commentToPost)
-  //     .expect(404)
-  //     .then(({ body }) => {
-  //       const { message } = body;
-  //       expect(message).toEqual("404 user not found");
-  //     });
-  // });
+  it('404: responds with error message "404 not found"', () => {
+    const commentToPost = {
+      username: "szpytma",
+      body: "test comment",
+    };
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(commentToPost)
+      .expect(404)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toEqual("404 not found");
+      });
+  });
+
+  it('404: responds with error message "404 not found"', () => {
+    const commentToPost = {
+      username: "bainesface",
+      body: "test comment",
+    };
+    return request(app)
+      .post("/api/reviews/999/comments")
+      .send(commentToPost)
+      .expect(404)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toEqual("404 not found");
+      });
+  });
 });
