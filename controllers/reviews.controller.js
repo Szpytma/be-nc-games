@@ -29,7 +29,7 @@ exports.patchReviewVotes = (req, res, next) => {
   const { review_id } = req.params;
   const { body } = req;
 
-  updateRevino id was foundewVotes(review_id, body)
+  updateReviewVotes(review_id, body)
     .then((review) => {
       res.status(200).send({ review });
     })
