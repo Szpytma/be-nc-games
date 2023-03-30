@@ -16,6 +16,13 @@ const { getAllUsers } = require("./controllers/users.controller");
 const app = express();
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res
+    .status(200)
+    .send(
+      `<h1>Please check <a href='https://github.com/Szpytma/nc-games#readme'> README</a> for instruction's.</h1>`
+    );
+});
 app.get("/api/categories", getCategories);
 
 app.get("/api/reviews", getAllReviews);
