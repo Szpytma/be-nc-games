@@ -19,7 +19,7 @@ describe("GET /*", () => {
   });
   it("404: responds with a message { error: 'This Path does not exist'}", () => {
     return request(app)
-      .get("/")
+      .get("/s")
       .expect(404)
       .then(({ body }) => {
         const { error } = body;
