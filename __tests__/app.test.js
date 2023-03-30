@@ -323,7 +323,7 @@ describe("PATCH /api/reviews/:review_id", () => {
 });
 
 describe("DELETE /api/comments/:comment_id", () => {
-  it("204: responds with nop content ", () => {
+  it("204: responds with no content ", () => {
     return request(app)
       .delete("/api/comments/2")
       .expect(204)
