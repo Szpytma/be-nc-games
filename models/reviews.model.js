@@ -27,7 +27,16 @@ exports.fetchAllReviews = (
     if (rows.length === 0) {
       return Promise.reject({ status: 404, message: "404 not found" });
     }
+
     return rows;
+  });
+};
+const checkIfCategoryExist = (categoryToCheck) => {
+  const baseQuery = `
+  SELECT COUNT (slug) FROM categories WHERE slug = $1;
+  `;
+  db.query(baseQuery, [categoryToCheck]).then(({ rows }) => {
+    return rows[0].count;
   });
 };
 

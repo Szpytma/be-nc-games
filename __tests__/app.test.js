@@ -141,6 +141,16 @@ describe("GET /api/reviews?queries=true", () => {
       });
   });
 
+  it.skip("200: should return empty array if category exist ", () => {
+    return request(app)
+      .get("/api/reviews?category=children's games")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toEqual([]);
+      });
+  });
+
   it("404: should return an error message 404 not found if category does not exist ", () => {
     return request(app)
       .get("/api/reviews?category=not_a_category")
