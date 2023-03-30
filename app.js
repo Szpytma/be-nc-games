@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
   res
     .status(200)
     .send(
-      `<h1>Please check <a href='https://github.com/Szpytma/nc-games#readme'> README</a> for instruction's.</h1>`
+      `<h1>Please check <a href='https://github.com/Szpytma/nc-games#readme'> README</a> for instructions.</h1>`
     );
 });
 app.get("/api/categories", getCategories);
