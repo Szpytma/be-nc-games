@@ -13,8 +13,8 @@ describe("GET /*", () => {
       .get("/hello")
       .expect(404)
       .then(({ body }) => {
-        const { error } = body;
-        expect(error).toEqual("This Path does not exist");
+        const { message } = body;
+        expect(message).toEqual("This Path does not exist");
       });
   });
   it("404: responds with a message { error: 'This Path does not exist'}", () => {
@@ -22,8 +22,8 @@ describe("GET /*", () => {
       .get("/s")
       .expect(404)
       .then(({ body }) => {
-        const { error } = body;
-        expect(error).toEqual("This Path does not exist");
+        const { message } = body;
+        expect(message).toEqual("This Path does not exist");
       });
   });
   it("404: responds with a message { error: 'This Path does not exist'}", () => {
@@ -31,8 +31,8 @@ describe("GET /*", () => {
       .get("/categoriess")
       .expect(404)
       .then(({ body }) => {
-        const { error } = body;
-        expect(error).toBe("This Path does not exist");
+        const { message } = body;
+        expect(message).toBe("This Path does not exist");
       });
   });
 });
