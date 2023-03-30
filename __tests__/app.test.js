@@ -13,17 +13,17 @@ describe("GET /*", () => {
       .get("/hello")
       .expect(404)
       .then(({ body }) => {
-        const { error } = body;
-        expect(error).toEqual("This Path does not exist");
+        const { message } = body;
+        expect(message).toEqual("This Path does not exist");
       });
   });
   it("404: responds with a message { error: 'This Path does not exist'}", () => {
     return request(app)
-      .get("/")
+      .get("/s")
       .expect(404)
       .then(({ body }) => {
-        const { error } = body;
-        expect(error).toEqual("This Path does not exist");
+        const { message } = body;
+        expect(message).toEqual("This Path does not exist");
       });
   });
   it("404: responds with a message { error: 'This Path does not exist'}", () => {
@@ -31,8 +31,8 @@ describe("GET /*", () => {
       .get("/categoriess")
       .expect(404)
       .then(({ body }) => {
-        const { error } = body;
-        expect(error).toBe("This Path does not exist");
+        const { message } = body;
+        expect(message).toBe("This Path does not exist");
       });
   });
 });
@@ -347,6 +347,23 @@ describe("DELETE /api/comments/:comment_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.message).toEqual("Please provide an valid data");
+      });
+  });
+});
+
+describe("GET /api/users", () => {
+  it("200: responds with an array of all users objects 4, should check if the user object have specific keys", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        const { users } = body;
+        expect(users).toHaveLength(4);
+        users.forEach((user) => {
+          expect(user).toHaveProperty("username");
+          expect(user).toHaveProperty("name");
+          expect(user).toHaveProperty("avatar_url");
+        });
       });
   });
 });

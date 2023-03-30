@@ -1,3 +1,3 @@
 exports.pathNotFound = (req, res) => {
-  res.status(404).send({ error: "This Path does not exist" });
+  res.status(404).send({ message: "This Path does not exist" });
 };
