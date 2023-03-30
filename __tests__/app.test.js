@@ -88,6 +88,69 @@ describe("GET /api/reviews", () => {
   });
 });
 
+describe("GET /api/reviews?queries=true", () => {
+  it("200: should return reviews based on 'category' value specified in query ", () => {
+    return request(app)
+      .get("/api/reviews?category=social deduction")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toHaveLength(11);
+        reviews.forEach((review) => {
+          expect(review.category).toBe("social deduction");
+        });
+      });
+  });
+  it("200: should return reviews sorted by title", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=title")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toBeSortedBy("title", {
+          descending: true,
+        });
+      });
+  });
+
+  it("200: should return reviews sorted created_at and ascending based", () => {
+    return request(app)
+      .get("/api/reviews?order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toBeSortedBy("created_at", {
+          descending: false,
+        });
+      });
+  });
+
+  it("200: should return reviews sorted by asc votes with category of social deduction", () => {
+    return request(app)
+      .get("/api/reviews?category=social deduction&sort_by=votes&order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toHaveLength(11);
+        reviews.forEach((review) => {
+          expect(review.category).toBe("social deduction");
+        });
+        expect(reviews).toBeSortedBy("votes", {
+          descending: false,
+        });
+      });
+  });
+
+  it("400: ", () => {
+    return request(app)
+      .get("/api/reviews?category=not_a_category")
+      .expect(400)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toBe("Category not Found");
+      });
+  });
+});
 describe("GET /api/reviews/:review_id", () => {
   it("should return an object of review with specific keys", () => {
     return request(app)
