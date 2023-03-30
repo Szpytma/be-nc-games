@@ -8,6 +8,7 @@ const {
 const {
   postComment,
   getCommentsByReviewID,
+  removeCommentByID,
 } = require("./controllers/comments.controller");
 const { pathNotFound } = require("./controllers/pathDoesExistError.controller");
 const { errorController } = require("./controllers/errorhandlers");
@@ -22,6 +23,9 @@ app.get("/api/reviews/:review_id", getReviewByID);
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewID);
 app.post("/api/reviews/:review_id/comments", postComment);
 app.patch("/api/reviews/:review_id", patchReviewVotes);
+
+app.delete("/api/comments/:comment_id", removeCommentByID);
+
 app.get("/*", pathNotFound);
 
 app.use((err, req, res, next) => {

@@ -292,7 +292,7 @@ describe("PATCH /api/reviews/:review_id", () => {
         });
       });
   });
-  it("400: responds with error if no id was found", () => {
+  it("404: responds with error if no id was found", () => {
     return request(app)
       .patch("/api/reviews/999")
       .send({ inc_votes: 5 })
@@ -301,7 +301,7 @@ describe("PATCH /api/reviews/:review_id", () => {
         expect(body.message).toEqual("404 not found");
       });
   });
-  it("404: responds with error if wrong data type was provided", () => {
+  it("400: responds with error if wrong data type was provided", () => {
     return request(app)
       .patch("/api/reviews/1")
       .send({ inc_votes: "five" })
@@ -318,6 +318,35 @@ describe("PATCH /api/reviews/:review_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.message).toEqual("Please provide data");
+      });
+  });
+});
+
+describe("DELETE /api/comments/:comment_id", () => {
+  it("204: responds with no content ", () => {
+    return request(app)
+      .delete("/api/comments/2")
+      .expect(204)
+      .then(({ body }) => {
+        expect(body).toEqual({});
+      });
+  });
+
+  it("404: responds with error if no id was found ", () => {
+    return request(app)
+      .delete("/api/comments/100")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toEqual("404 not found");
+      });
+  });
+
+  it("400: responds with error if id is not a number ", () => {
+    return request(app)
+      .delete("/api/comments/one")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toEqual("Please provide an valid data");
       });
   });
 });
