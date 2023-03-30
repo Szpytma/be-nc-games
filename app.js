@@ -12,6 +12,7 @@ const {
 } = require("./controllers/comments.controller");
 const { pathNotFound } = require("./controllers/pathDoesExistError.controller");
 const { errorController } = require("./controllers/errorhandlers");
+const { getAllUsers } = require("./controllers/users.controller");
 const app = express();
 app.use(express.json());
 
@@ -25,6 +26,8 @@ app.post("/api/reviews/:review_id/comments", postComment);
 app.patch("/api/reviews/:review_id", patchReviewVotes);
 
 app.delete("/api/comments/:comment_id", removeCommentByID);
+
+app.get("/api/users", getAllUsers);
 
 app.get("/*", pathNotFound);
 
