@@ -141,13 +141,35 @@ describe("GET /api/reviews?queries=true", () => {
       });
   });
 
-  it("400: ", () => {
+  it("404: should return an error message 404 not found if category does not exist ", () => {
     return request(app)
       .get("/api/reviews?category=not_a_category")
+      .expect(404)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toBe("404 not found");
+      });
+  });
+
+  it("400: invalid sortBy value should return an error. ", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=notTitle")
       .expect(400)
       .then(({ body }) => {
         const { message } = body;
-        expect(message).toBe("Category not Found");
+        expect(message).toBe(
+          "Column does not exist, please sort it with valid column"
+        );
+      });
+  });
+
+  it("400: invalid order value should return an error.", () => {
+    return request(app)
+      .get("/api/reviews?order=ascdesc")
+      .expect(400)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toBe("Please use asc or desc for sorting");
       });
   });
 });

@@ -8,6 +8,18 @@ exports.errorController = (err, res) => {
   if (err.code === "23502") {
     res.status(400).send({ message: "Please provide data" });
   }
+  if (err.code === "42601") {
+    res.status(400).send({
+      message: "Please use asc or desc for sorting",
+    });
+  }
+  if (err.code === "42703") {
+    res
+      .status(400)
+      .send({
+        message: "Column does not exist, please sort it with valid column",
+      });
+  }
   if (err.status && err.message) {
     res.status(err.status).send({ message: err.message });
   }

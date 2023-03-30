@@ -21,7 +21,7 @@ To see that initialize that project on your local machine, clone project by runn
 
 To run application please run node connection.js. Please see below possible http request for the application.
 
-Possible GET REQUEST
+## GET REQUEST
 
 - "/" - to see README.me file
 - "/api/categories" - to list all game categories
@@ -31,14 +31,14 @@ Possible GET REQUEST
 - "/api/reviews/:review_id/comments" - to list specific comments by review ID
 - "/api/users", - to list all users
 
-Possible POST REQUEST
+## POST REQUEST
 
 - "/api/reviews/:review_id/comments" - To add an comment to the specific review accessing byu ID and passing username and body
 
-Possible PATCH REQUEST
+## PATCH REQUEST
 
 - "/api/reviews/:review_id" - to update votes on review based on ID
 
-Possible DELETE REQUEST
+## DELETE REQUEST
 
 - "api/comments/:comment_id" - to remove comment by the comment ID

@@ -25,7 +25,7 @@ exports.fetchAllReviews = (
   baseQuery += `ORDER BY ${sort_by} ${order}`;
   return db.query(baseQuery, quarriesArray).then(({ rows }) => {
     if (rows.length === 0) {
-      return Promise.reject({ status: 400, message: "Category not Found" });
+      return Promise.reject({ status: 404, message: "404 not found" });
     }
     return rows;
   });
