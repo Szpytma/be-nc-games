@@ -315,7 +315,7 @@ describe("PATCH /api/reviews/:review_id", () => {
     return request(app)
       .patch("/api/reviews/1")
       .send()
-      .expect(404)
+      .expect(400)
       .then(({ body }) => {
         expect(body.message).toEqual("Please provide data");
       });
