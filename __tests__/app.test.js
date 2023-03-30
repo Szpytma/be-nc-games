@@ -292,10 +292,11 @@ describe("PATCH /api/reviews/:review_id", () => {
         });
       });
   });
-  it("404: responds with error if no id was found", () => {
+  it("400: responds with error if no id was found", () => {
     return request(app)
       .patch("/api/reviews/999")
       .send({ inc_votes: 5 })
+      .expect(404)
       .then(({ body }) => {
         expect(body.message).toEqual("404 not found");
       });
@@ -304,8 +305,19 @@ describe("PATCH /api/reviews/:review_id", () => {
     return request(app)
       .patch("/api/reviews/1")
       .send({ inc_votes: "five" })
+      .expect(400)
       .then(({ body }) => {
         expect(body.message).toEqual("Please provide an valid data");
+      });
+  });
+
+  it("404: responds with error if  patch object doesn't have required inc_votes key", () => {
+    return request(app)
+      .patch("/api/reviews/1")
+      .send()
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toEqual("Please provide data");
       });
   });
 });
