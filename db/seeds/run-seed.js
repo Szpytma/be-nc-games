@@ -1,9 +1,9 @@
 const devData = require("../data/development-data/index.js");
 const seed = require("./seed.js");
-const db = require(`${__dirname}/../connection.js`);
+const dbConnection = require(`../`);
 
 const runSeed = () => {
-  return seed(devData).then(() => db.end());
+  return seed(devData).then(() => dbConnection.end());
 };
 
 runSeed();
