@@ -269,3 +269,55 @@ describe("POST /api/reviews/:review_id/comments", () => {
       });
   });
 });
+
+describe("PATCH /api/reviews/:review_id", () => {
+  it("200: responds with the updated object with incremented votes ", () => {
+    const patchObj = { inc_votes: 5 };
+    return request(app)
+      .patch("/api/reviews/1")
+      .send(patchObj)
+      .then(({ body }) => {
+        const { review } = body;
+        expect(review).toMatchObject({
+          review_id: 1,
+          title: "Agricola",
+          designer: "Uwe Rosenberg",
+          owner: "mallionaire",
+          review_img_url:
+            "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=700&h=700",
+          review_body: "Farmyard fun!",
+          category: "euro game",
+          created_at: "2021-01-18T10:00:20.514Z",
+          votes: 6,
+        });
+      });
+  });
+  it("400: responds with error if no id was found", () => {
+    return request(app)
+      .patch("/api/reviews/999")
+      .send({ inc_votes: 5 })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.message).toEqual("404 not found");
+      });
+  });
+  it("404: responds with error if wrong data type was provided", () => {
+    return request(app)
+      .patch("/api/reviews/1")
+      .send({ inc_votes: "five" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toEqual("Please provide an valid data");
+      });
+  });
+
+  it("404: responds with error if  patch object doesn't have required inc_votes key", () => {
+    return request(app)
+      .patch("/api/reviews/1")
+      .send()
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toEqual("Please provide data");
+      });
+  });
+});

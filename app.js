@@ -3,6 +3,7 @@ const { getCategories } = require("./controllers/categories.controller");
 const {
   getReviewByID,
   getAllReviews,
+  patchReviewVotes,
 } = require("./controllers/reviews.controller");
 const {
   postComment,
@@ -20,7 +21,7 @@ app.get("/api/reviews/:review_id", getReviewByID);
 
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewID);
 app.post("/api/reviews/:review_id/comments", postComment);
-
+app.patch("/api/reviews/:review_id", patchReviewVotes);
 app.get("/*", pathNotFound);
 
 app.use((err, req, res, next) => {

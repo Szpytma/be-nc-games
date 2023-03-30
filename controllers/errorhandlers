@@ -5,6 +5,9 @@ exports.errorController = (err, res) => {
   if (err.code === "23503") {
     res.status(404).send({ message: "404 not found" });
   }
+  if (err.code === "23502") {
+    res.status(400).send({ message: "Please provide data" });
+  }
   if (err.status && err.message) {
     res.status(err.status).send({ message: err.message });
   }
