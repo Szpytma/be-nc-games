@@ -19,11 +19,12 @@ exports.fetchAllReviews = (
   const quarriesArray = [];
 
   if (category) {
-    quarriesArray.push(category);
     baseQuery = `SELECT * FROM reviews WHERE category = $1`;
+    quarriesArray.push(category);
   }
   baseQuery += `ORDER BY ${sort_by} ${order}`;
   return db.query(baseQuery, quarriesArray).then(({ rows }) => {
+    console.log(rows.length, checkIfCategoryExist(category));
     if (rows.length === 0) {
       return Promise.reject({ status: 404, message: "404 not found" });
     }
