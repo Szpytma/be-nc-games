@@ -19,7 +19,6 @@ exports.getAllReviews = (req, res, next) => {
   const { category, sort_by, order } = req.query;
   fetchAllReviews(category, sort_by, order)
     .then((reviews) => {
-      console.log(reviews);
       res.status(200).send({ reviews });
     })
     .catch((error) => {

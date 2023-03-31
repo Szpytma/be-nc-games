@@ -141,7 +141,7 @@ describe("GET /api/reviews?queries=true", () => {
       });
   });
 
-  it.only("200: should return empty array if category exist ", () => {
+  it("200: should return empty array if category exist ", () => {
     return request(app)
       .get("/api/reviews?category=children's games")
       .expect(200)
