@@ -1,4 +1,5 @@
 const express = require("express");
+const { getIndex } = require("./controllers/index.controller");
 const { getCategories } = require("./controllers/categories.controller");
 const {
   getReviewByID,
@@ -17,13 +18,7 @@ const endpoints = require("./endpoints.json");
 const app = express();
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res
-    .status(200)
-    .send(
-      `<h1>Please check <a href='https://github.com/Szpytma/nc-games#readme'> README</a> for instructions.</h1>`
-    );
-});
+app.get("/", getIndex);
 app.get("/api", (req, res) => {
   res.send(endpoints);
 });
