@@ -21,13 +21,18 @@ app.use(express.json());
 
 app.get("/", getIndex);
 app.get("/api", getAllEndpoints);
+
 app.get("/api/categories", getCategories);
+
 app.get("/api/reviews", getAllReviews);
 app.get("/api/reviews/:review_id", getReviewByID);
+app.patch("/api/reviews/:review_id", patchReviewVotes);
+
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewID);
 app.post("/api/reviews/:review_id/comments", postComment);
-app.patch("/api/reviews/:review_id", patchReviewVotes);
+
 app.delete("/api/comments/:comment_id", removeCommentByID);
+
 app.get("/api/users", getAllUsers);
 app.get("/*", pathNotFound);
 
