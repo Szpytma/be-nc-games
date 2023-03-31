@@ -48,6 +48,22 @@ describe("GET /api", () => {
         expect(body).toEqual(endpoints);
       });
   });
+  it("200; Responds with JSON object containing endpoints", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toHaveProperty(["GET /"]);
+        expect(body).toHaveProperty(["GET /api"]);
+        expect(body).toHaveProperty(["GET /api/categories"]);
+        expect(body).toHaveProperty(["GET /api/reviews"]);
+        expect(body).toHaveProperty(["GET api/reviews/:review_id/comments"]);
+        expect(body).toHaveProperty(["POST api/reviews/:review_id/comments"]);
+        expect(body).toHaveProperty(["PATCH /api/reviews/:review_id"]);
+        expect(body).toHaveProperty(["DELETE /api/comments/:comment_id"]);
+        expect(body).toHaveProperty(["GET /api/users"]);
+      });
+  });
   it("GET / should return information about Readme.md file", () => {
     expect(endpoints["GET /"].description).toEqual(
       "serves up with a information about Readme.md file"
