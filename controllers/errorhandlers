@@ -14,11 +14,9 @@ exports.errorController = (err, res) => {
     });
   }
   if (err.code === "42703") {
-    res
-      .status(400)
-      .send({
-        message: "Column does not exist, please sort it with valid column",
-      });
+    res.status(400).send({
+      message: "Column does not exist, please sort it with valid column",
+    });
   }
   if (err.status && err.message) {
     res.status(err.status).send({ message: err.message });
