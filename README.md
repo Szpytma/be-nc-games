@@ -8,6 +8,8 @@ The database will be PSQL, and it will be possible to interact with it using [no
 
 Link to the hosted version [Szpytma nc-games](https://nc-games-rkbx.onrender.com).
 
+## To see possible endpoints please go to api/
+
 To see that initialize that project on your local machine you will need Node v19.5.0 and PostgreSQL 14.7, clone project by running command
 
 1. > `git clone https://github.com/Szpytma/nc-games.git `
@@ -20,25 +22,3 @@ To see that initialize that project on your local machine you will need Node v19
 5. > `Run _npm run seed_` to insert data into previously created database
 
 To run application please run node connection.js. Please see below possible http request for the application.
-
-## GET REQUEST
-
-- "/" - to see README.me file
-- "/api/categories" - to list all game categories
-- "/api/reviews" - to list all available reviews
-- "/api/reviews?queries=" - this endpoint accept 'category', 'sort_by' & 'order' as quarries.
-- "/api/reviews/:review_id" - to list specific review by ID
-- "/api/reviews/:review_id/comments" - to list specific comments by review ID
-- "/api/users", - to list all users
-
-## POST REQUEST
-
-- "/api/reviews/:review_id/comments" - To add an comment to the specific review accessing byu ID and passing username and body
-
-## PATCH REQUEST
-
-- "/api/reviews/:review_id" - to update votes on review based on ID
-
-## DELETE REQUEST
-
-- "api/comments/:comment_id" - to remove comment by the comment ID

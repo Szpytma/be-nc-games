@@ -3,6 +3,8 @@ const app = require("../app");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/");
 const connection = require("../db");
+const { forEach } = require("../db/data/test-data/categories");
+const endpoints = require("../endpoints.json");
 
 beforeEach(() => seed(testData));
 afterAll(() => connection.end());
@@ -34,6 +36,27 @@ describe("GET /*", () => {
         const { message } = body;
         expect(message).toBe("This Path does not exist");
       });
+  });
+});
+
+describe("GET /api", () => {
+  it("200; Responds with JSON object containing endpoints", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual(endpoints);
+      });
+  });
+  it("GET / should return information about Readme.md file", () => {
+    expect(endpoints["GET /"].description).toEqual(
+      "serves up with a information about Readme.md file"
+    );
+  });
+  it("GET /api should return a json representation of all the available endpoints of the api", () => {
+    expect(endpoints["GET /api"].description).toEqual(
+      "serves up a json representation of all the available endpoints of the api"
+    );
   });
 });
 
