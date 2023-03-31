@@ -13,6 +13,7 @@ const {
 const { pathNotFound } = require("./controllers/pathDoesExistError.controller");
 const { errorController } = require("./controllers/errorhandlers");
 const { getAllUsers } = require("./controllers/users.controller");
+const endpoints = require("./endpoints.json");
 const app = express();
 app.use(express.json());
 
@@ -22,6 +23,9 @@ app.get("/", (req, res) => {
     .send(
       `<h1>Please check <a href='https://github.com/Szpytma/nc-games#readme'> README</a> for instructions.</h1>`
     );
+});
+app.get("/api", (req, res) => {
+  res.send(endpoints);
 });
 app.get("/api/categories", getCategories);
 
