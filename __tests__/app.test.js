@@ -109,7 +109,6 @@ describe("GET /api/reviews/:review_id", () => {
       .expect(200)
       .then(({ body }) => {
         const { review } = body;
-        console.log(review);
         expect(review).toHaveProperty("comment_count", expect.any(Number));
       });
   });

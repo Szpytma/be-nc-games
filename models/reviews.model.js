@@ -11,7 +11,7 @@ exports.fetchReviewByID = (id) => {
       GROUP BY reviews.review_id 
   `;
   return db.query(selectAllCategories, [id]).then(({ rows }) => {
-    if (rows.length === 0) {
+    if (!rows.length) {
       return Promise.reject({ status: 404, message: "Index outOfBound" });
     }
     return rows[0];
