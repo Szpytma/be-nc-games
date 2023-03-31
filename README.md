@@ -8,7 +8,7 @@ The database will be PSQL, and it will be possible to interact with it using [no
 
 Link to the hosted version [Szpytma nc-games](https://nc-games-rkbx.onrender.com).
 
-## To see possible endpoints please go to api/
+## To see possible endpoints please go to /api
 
 To see that initialize that project on your local machine you will need Node v19.5.0 and PostgreSQL 14.7, clone project by running command
 
