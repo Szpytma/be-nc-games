@@ -103,7 +103,7 @@ describe("GET /api/reviews/:review_id", () => {
         expect(review.review_body).toBe("Farmyard fun!");
       });
   });
-  it.only("should return review object with comment_count key", () => {
+  it("should return review object with comment_count key", () => {
     return request(app)
       .get("/api/reviews/2")
       .expect(200)

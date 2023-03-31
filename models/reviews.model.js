@@ -3,7 +3,7 @@ const db = require("../db/");
 exports.fetchReviewByID = (id) => {
   const selectAllCategories = `
   SELECT reviews.*, 
-  COUNT(comments.review_id) AS comment_count 
+  COUNT(comments.review_id)::INT AS comment_count 
       FROM reviews 
       LEFT JOIN comments 
       ON comments.review_id = reviews.review_id
