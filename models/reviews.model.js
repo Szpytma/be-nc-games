@@ -10,9 +10,31 @@ exports.fetchReviewByID = (id) => {
   });
 };
 
-exports.fetchAllReviews = () => {
-  const selectAllCategories = "SELECT * FROM reviews ORDER BY created_at DESC";
-  return db.query(selectAllCategories).then(({ rows }) => {
+exports.fetchAllReviews = (
+  category,
+  sort_by = "created_at",
+  order = "DESC"
+) => {
+  let baseQuery = `SELECT * FROM reviews `;
+  const quarriesArray = [];
+
+  if (category) {
+    baseQuery = `SELECT * FROM reviews WHERE category = $1`;
+    quarriesArray.push(category);
+  }
+  baseQuery += `ORDER BY ${sort_by} ${order}`;
+
+  return db.query(baseQuery, quarriesArray).then(({ rows }) => {
+    if (rows.length === 0) {
+      return db
+        .query(`SELECT * FROM categories WHERE slug = $1;`, [category])
+        .then(({ rows }) => {
+          if (!rows.length) {
+            return Promise.reject({ status: 404, message: "404 not found" });
+          }
+          return [];
+        });
+    }
     return rows;
   });
 };

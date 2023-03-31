@@ -3,6 +3,8 @@ const app = require("../app");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/");
 const connection = require("../db");
+const { forEach } = require("../db/data/test-data/categories");
+const endpoints = require("../endpoints.json");
 
 beforeEach(() => seed(testData));
 afterAll(() => connection.end());
@@ -34,6 +36,43 @@ describe("GET /*", () => {
         const { message } = body;
         expect(message).toBe("This Path does not exist");
       });
+  });
+});
+
+describe("GET /api", () => {
+  it("200; Responds with JSON object containing endpoints", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual(endpoints);
+      });
+  });
+  it("200; Responds with JSON object containing endpoints", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toHaveProperty(["GET /"]);
+        expect(body).toHaveProperty(["GET /api"]);
+        expect(body).toHaveProperty(["GET /api/categories"]);
+        expect(body).toHaveProperty(["GET /api/reviews"]);
+        expect(body).toHaveProperty(["GET api/reviews/:review_id/comments"]);
+        expect(body).toHaveProperty(["POST api/reviews/:review_id/comments"]);
+        expect(body).toHaveProperty(["PATCH /api/reviews/:review_id"]);
+        expect(body).toHaveProperty(["DELETE /api/comments/:comment_id"]);
+        expect(body).toHaveProperty(["GET /api/users"]);
+      });
+  });
+  it("GET / should return information about Readme.md file", () => {
+    expect(endpoints["GET /"].description).toEqual(
+      "serves up with a information about Readme.md file"
+    );
+  });
+  it("GET /api should return a json representation of all the available endpoints of the api", () => {
+    expect(endpoints["GET /api"].description).toEqual(
+      "serves up a json representation of all the available endpoints of the api"
+    );
   });
 });
 
@@ -88,6 +127,101 @@ describe("GET /api/reviews", () => {
   });
 });
 
+describe("GET /api/reviews?queries=true", () => {
+  it("200: should return reviews based on 'category' value specified in query ", () => {
+    return request(app)
+      .get("/api/reviews?category=social deduction")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toHaveLength(11);
+        reviews.forEach((review) => {
+          expect(review.category).toBe("social deduction");
+        });
+      });
+  });
+  it("200: should return reviews sorted by title", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=title")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toBeSortedBy("title", {
+          descending: true,
+        });
+      });
+  });
+
+  it("200: should return reviews sorted created_at and ascending based", () => {
+    return request(app)
+      .get("/api/reviews?order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toBeSortedBy("created_at", {
+          descending: false,
+        });
+      });
+  });
+
+  it("200: should return reviews sorted by asc votes with category of social deduction", () => {
+    return request(app)
+      .get("/api/reviews?category=social deduction&sort_by=votes&order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toHaveLength(11);
+        reviews.forEach((review) => {
+          expect(review.category).toBe("social deduction");
+        });
+        expect(reviews).toBeSortedBy("votes", {
+          descending: false,
+        });
+      });
+  });
+
+  it("200: should return empty array if category exist ", () => {
+    return request(app)
+      .get("/api/reviews?category=children's games")
+      .expect(200)
+      .then(({ body }) => {
+        const { reviews } = body;
+        expect(reviews).toEqual([]);
+      });
+  });
+
+  it("404: should return an error message 404 not found if category does not exist ", () => {
+    return request(app)
+      .get("/api/reviews?category=not_a_category")
+      .expect(404)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toBe("404 not found");
+      });
+  });
+
+  it("400: invalid sortBy value should return an error. ", () => {
+    return request(app)
+      .get("/api/reviews?sort_by=notTitle")
+      .expect(400)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toBe(
+          "Column does not exist, please sort it with valid column"
+        );
+      });
+  });
+
+  it("400: invalid order value should return an error.", () => {
+    return request(app)
+      .get("/api/reviews?order=ascdesc")
+      .expect(400)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toBe("Please use asc or desc for sorting");
+      });
+  });
+});
 describe("GET /api/reviews/:review_id", () => {
   it("should return an object of review with specific keys", () => {
     return request(app)
