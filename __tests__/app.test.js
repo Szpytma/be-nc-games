@@ -237,6 +237,24 @@ describe("GET /api/reviews/:review_id", () => {
         expect(review.review_body).toBe("Farmyard fun!");
       });
   });
+  it("should return review object with comment_count key", () => {
+    return request(app)
+      .get("/api/reviews/2")
+      .expect(200)
+      .then(({ body }) => {
+        const { review } = body;
+        expect(review).toHaveProperty("comment_count", expect.any(Number));
+      });
+  });
+  it("should return review id 2 with comment_count key equal to 3", () => {
+    return request(app)
+      .get("/api/reviews/2")
+      .expect(200)
+      .then(({ body }) => {
+        const { review } = body;
+        expect(review.comment_count).toBe(3);
+      });
+  });
 
   it("should return an object with the title 'Ultimate Werewolf' from id 3", () => {
     return request(app)

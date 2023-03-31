@@ -1,9 +1,17 @@
 const db = require("../db/");
 
 exports.fetchReviewByID = (id) => {
-  const selectAllCategories = "SELECT * FROM reviews WHERE review_id  = $1";
+  const selectAllCategories = `
+  SELECT reviews.*, 
+  COUNT(comments.review_id)::INT AS comment_count 
+      FROM reviews 
+      LEFT JOIN comments 
+      ON comments.review_id = reviews.review_id
+      WHERE reviews.review_id = $1 
+      GROUP BY reviews.review_id 
+  `;
   return db.query(selectAllCategories, [id]).then(({ rows }) => {
-    if (rows.length === 0) {
+    if (!rows.length) {
       return Promise.reject({ status: 404, message: "Index outOfBound" });
     }
     return rows[0];
