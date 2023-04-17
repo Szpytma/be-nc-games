@@ -1,7 +1,9 @@
 const express = require("express");
+const cors = require('cors');
 const { getIndex } = require("./controllers/index.controller");
 const { getAllEndpoints } = require("./controllers/endpoints.controller");
 const { getCategories } = require("./controllers/categories.controller");
+
 const {
   getReviewByID,
   getAllReviews,
@@ -15,7 +17,7 @@ const {
 const { pathNotFound } = require("./controllers/pathDoesExistError.controller");
 const { errorController } = require("./controllers/errorHandlers");
 const { getAllUsers } = require("./controllers/users.controller");
-
+app.use(cors());
 const app = express();
 app.use(express.json());
 
