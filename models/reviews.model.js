@@ -23,11 +23,39 @@ exports.fetchAllReviews = (
   sort_by = "created_at",
   order = "DESC"
 ) => {
-  let baseQuery = `SELECT * FROM reviews `;
+  let baseQuery = `SELECT 
+reviews.review_id,
+  reviews.title,
+  reviews.category,
+  reviews.designer,
+  reviews.owner,
+  reviews.review_body,
+  reviews.review_img_url,
+  reviews.created_at,
+  reviews.votes,
+  COUNT(comments.review_id)::INT AS comment_count
+FROM reviews 
+LEFT JOIN comments 
+ON comments.review_id = reviews.review_id
+GROUP BY reviews.review_id `;
   const quarriesArray = [];
 
   if (category) {
     baseQuery = `SELECT * FROM reviews WHERE category = $1`;
+    baseQuery = `SELECT 
+reviews.review_id,
+  reviews.title,
+  reviews.category,
+  reviews.designer,
+  reviews.owner,
+  reviews.review_body,
+  reviews.review_img_url,
+  reviews.created_at,
+  reviews.votes,
+  COUNT(comments.review_id)::INT AS comment_count
+FROM reviews 
+LEFT JOIN comments 
+ON comments.review_id = reviews.review_id WHERE category = $1 GROUP BY reviews.review_id `;
     quarriesArray.push(category);
   }
   baseQuery += `ORDER BY ${sort_by} ${order}`;
