@@ -101,7 +101,6 @@ describe("GET /api/reviews", () => {
         const { reviews } = body;
         expect(reviews).toHaveLength(13);
         reviews.forEach((review) => {
-          console.log(review);
           expect(review).toHaveProperty("review_id", expect.any(Number));
           expect(review).toHaveProperty("title", expect.any(String));
           expect(review).toHaveProperty("category", expect.any(String));
