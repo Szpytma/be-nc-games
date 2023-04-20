@@ -12,7 +12,7 @@ Link to the hosted version [Szpytma nc-games](https://nc-games-rkbx.onrender.com
 
 To see that initialize that project on your local machine you will need Node v19.5.0 and PostgreSQL 14.7, clone project by running command
 
-1. > `git clone https://github.com/Szpytma/nc-games.git `
+1. > `git clone https://github.com/Szpytma/be-nc-games.git `
 2. > `npm install ` to initialize all needed dependencies
 3. create .env files for the dev and test data in the root of the project folder (env.development, .env.test).
    Each file should have _PGDATABASE_ set up to the database
